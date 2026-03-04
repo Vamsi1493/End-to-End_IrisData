@@ -1,12 +1,125 @@
-<script>
-    async function predict() {
-        const data = {
-            sepal_length: parseFloat(document.getElementById("sepal_length").value),
-            sepal_width: parseFloat(document.getElementById("sepal_width").value),
-            petal_length: parseFloat(document.getElementById("petal_length").value),
-            petal_width: parseFloat(document.getElementById("petal_width").value)
-        };
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Iris Flower Predictor</title>
 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 25px 30px;
+            border-radius: 8px;
+            width: 350px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Iris Flower Predictor</h2>
+
+    <label>Sepal Length</label>
+    <input type="number" step="any" id="sepal_length" placeholder="e.g. 5.1">
+
+    <label>Sepal Width</label>
+    <input type="number" step="any" id="sepal_width" placeholder="e.g. 3.5">
+
+    <label>Petal Length</label>
+    <input type="number" step="any" id="petal_length" placeholder="e.g. 1.4">
+
+    <label>Petal Width</label>
+    <input type="number" step="any" id="petal_width" placeholder="e.g. 0.2">
+
+    <button onclick="predict()">Predict</button>
+
+    <div class="result" id="result"></div>
+    <div class="error" id="error"></div>
+</div>
+
+<script>
+async function predict() {
+
+    document.getElementById("result").innerText = "";
+    document.getElementById("error").innerText = "";
+
+    const sepal_length = document.getElementById("sepal_length").value;
+    const sepal_width = document.getElementById("sepal_width").value;
+    const petal_length = document.getElementById("petal_length").value;
+    const petal_width = document.getElementById("petal_width").value;
+
+    if (!sepal_length || !sepal_width || !petal_length || !petal_width) {
+        document.getElementById("error").innerText = "Please fill all fields.";
+        return;
+    }
+
+    const data = {
+        sepal_length: parseFloat(sepal_length),
+        sepal_width: parseFloat(sepal_width),
+        petal_length: parseFloat(petal_length),
+        petal_width: parseFloat(petal_width)
+    };
+
+    try {
         const response = await fetch("/predict", {
             method: "POST",
             headers: {
@@ -15,8 +128,21 @@
             body: JSON.stringify(data)
         });
 
+        if (!response.ok) {
+            throw new Error("Server error");
+        }
+
         const result = await response.json();
+
         document.getElementById("result").innerText =
             "Predicted Class: " + result.prediction;
+
+    } catch (error) {
+        document.getElementById("error").innerText =
+            "Error connecting to server. Check backend logs.";
     }
+}
 </script>
+
+</body>
+</html>
