@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Iris Flower Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 25px 30px;
+            border-radius: 8px;
+            width: 350px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Iris Flower Predictor</h2>
+
+    <label>Sepal Length</label>
+    <input type="number" step="any" id="sepal_length" placeholder="e.g. 5.1">
+
+    <label>Sepal Width</label>
+    <input type="number" step="any" id="sepal_width" placeholder="e.g. 3.5">
+
+    <label>Petal Length</label>
+    <input type="number" step="any" id="petal_length" placeholder="e.g. 1.4">
+
+    <label>Petal Width</label>
+    <input type="number" step="any" id="petal_width" placeholder="e.g. 0.2">
+
+    <button onclick="predict()">Predict</button>
+
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    async function predict() {
+        const data = {
+            sepal_length: parseFloat(document.getElementById("sepal_length").value),
+            sepal_width: parseFloat(document.getElementById("sepal_width").value),
+            petal_length: parseFloat(document.getElementById("petal_length").value),
+            petal_width: parseFloat(document.getElementById("petal_width").value)
+        };
+
+        // Replace URL with your backend endpoint
+        const response = await fetch("http://127.0.0.1:5000/predict", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        document.getElementById("result").innerText =
+            "Predicted Class: " + result.prediction;
+    }
+</script>
+
+</body>
+</html>

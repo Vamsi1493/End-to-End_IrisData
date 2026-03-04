@@ -1,0 +1,43 @@
+# =========================
+# Virtual Environment
+# =========================
+venv/
+.venv/
+Include/
+Lib/
+Scripts/
+share/
+pyvenv.cfg
+
+# =========================
+# Python cache files
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+
+# =========================
+# VS Code settings
+# =========================
+.vscode/
+
+# =========================
+# Environment variables
+# =========================
+.env
+
+# =========================
+# OS generated files
+# =========================
+Thumbs.db
+.DS_Store
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Jupyter Notebook
+# =========================
+.ipynb_checkpoints/
